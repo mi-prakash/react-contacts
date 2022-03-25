@@ -2,13 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './assets/css/main.css';
 import ContactForm from './components/ContactForm';
-import ContactList from './components/ContactList';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
 	<React.StrictMode>
 		<ContactForm />
-		<ContactList />
 	</React.StrictMode>,
 	document.getElementById('root'),
 );
