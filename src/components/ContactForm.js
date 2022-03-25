@@ -1,53 +1,55 @@
 import { useState } from 'react';
-// import ContactRow from './ContactRow';
+import ContactRow from './ContactRow';
 
 function ContactForm() {
-	/**
-	 * State for table Users
-	 */
-	const [users, setUsers] = useState([]);
+	const [users, setUsers] = useState([
+		{ id: 1648201365283, name: 'Leslie Berry', email: 'wojiri@mailinator.com', phone: '+1 (728) 439-3731' },
+		{ id: 1648201368793, name: 'Shelby Hurley', email: 'juvucizapo@mailinator.com', phone: '+1 (814) 356-4568' },
+		{ id: 1648201371778, name: 'Bernard Bauer', email: 'xaxafufod@mailinator.com', phone: '+1 (372) 543-3339' },
+	]);
 
-	/**
-	 * State for Form User
-	 */
 	const [user, setUser] = useState({
 		name: '',
 		email: '',
+		phone: '',
 	});
 
-	/**
-	 * Handle input data to store into User state
-	 * @param {object} event
-	 */
 	const inputHandler = (event) => {
-		console.log('called');
 		const { name, value } = event.target;
-		if (name === 'name') {
-			user.name = value;
-		}
-		if (name === 'email') {
-			user.email = value;
-		}
+		setUser((prevState) => {
+			return {
+				...prevState,
+				[name]: value,
+			};
+		});
 	};
 
-	/**
-	 * Handle data after form submit
-	 * @param {object} event
-	 */
-	const onSubmit = (event) => {
-		event.preventDefault();
-		let data = { ...user };
-		data.id = +new Date();
-		setUsers([...users, data]);
+	const emptyUserState = () => {
 		setUser({
 			name: '',
 			email: '',
+			phone: '',
 		});
-		event.target.reset();
+	};
+
+	const onSubmit = (event) => {
+		event.preventDefault();
+		if (user.name !== '' && user.email !== '' && user.phone !== '') {
+			let data = { ...user };
+			data.id = +new Date();
+			setUsers([...users, data]);
+			emptyUserState();
+			event.target.reset();
+		}
 	};
 
 	const deleteUser = (user_id) => {
-		console.log(user_id);
+		let confirmText = 'Are you sure?';
+		if (window.confirm(confirmText) === true) {
+			let newUsers = users.filter((user) => user.id !== user_id);
+			console.log(newUsers);
+			setUsers(newUsers);
+		}
 	};
 
 	return (
@@ -68,6 +70,19 @@ function ContactForm() {
 									type="text"
 									className="form-control bg-dark text-light border-secondary"
 									name="name"
+									value={user.name}
+								/>
+							</div>
+							<div className="mb-2">
+								<label htmlFor="name" className="form-label">
+									Phone
+								</label>
+								<input
+									onChange={inputHandler}
+									type="text"
+									className="form-control bg-dark text-light border-secondary"
+									name="phone"
+									value={user.phone}
 								/>
 							</div>
 							<div className="mb-2">
@@ -79,6 +94,7 @@ function ContactForm() {
 									type="email"
 									className="form-control bg-dark text-light border-secondary"
 									name="email"
+									value={user.email}
 								/>
 							</div>
 							<div className="d-grid pt-2">
@@ -90,7 +106,6 @@ function ContactForm() {
 					</div>
 				</div>
 			</div>
-
 			<div className="container contact mt-5">
 				<header className="contact-header">
 					<h2 className="text-info">Contact List</h2>
@@ -102,23 +117,14 @@ function ContactForm() {
 								<tr>
 									<th>#</th>
 									<th>Full Name</th>
+									<th>Phone</th>
 									<th>Email</th>
 									<th></th>
 								</tr>
 							</thead>
 							<tbody>
 								{users.map((user) => (
-									// <ContactRow data={user} key={user.id} />
-									<tr key={user.id}>
-										<td>{user.id}</td>
-										<td>{user.name}</td>
-										<td>{user.email}</td>
-										<td>
-											<button className="btn btn-danger btn-sm px-1 py-0" onClick={() => deleteUser(user.id)}>
-												<i className="fa fa-trash"></i>
-											</button>
-										</td>
-									</tr>
+									<ContactRow key={user.id} user={user} deleteUser={deleteUser} />
 								))}
 							</tbody>
 						</table>
