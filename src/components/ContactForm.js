@@ -8,7 +8,10 @@ function ContactForm() {
 		{ id: 1648201371778, name: 'Bernard Bauer', email: 'xaxafufod@mailinator.com', phone: '+1 (372) 543-3339' },
 	]);
 
+	const [preSearchUsers, setPreSearchUsers] = useState([]);
+
 	const [user, setUser] = useState({
+		id: '',
 		name: '',
 		email: '',
 		phone: '',
@@ -24,8 +27,43 @@ function ContactForm() {
 		});
 	};
 
+	const searchHandler = (event) => {
+		const { value } = event.target;
+		let isPreEmpty = false;
+		if (!preSearchUsers.length) {
+			setPreSearchUsers([...users]);
+			isPreEmpty = true;
+		}
+		if (value !== '') {
+			let newUsers;
+			if (isPreEmpty) {
+				console.log(users[0].id);
+				newUsers = users.filter(
+					(user) =>
+						user.id.toString().includes(value.toLowerCase()) ||
+						user.name.toLowerCase().includes(value.toLowerCase()) ||
+						user.email.toLowerCase().includes(value.toLowerCase()) ||
+						user.phone.toLowerCase().includes(value.toLowerCase()),
+				);
+			} else {
+				newUsers = preSearchUsers.filter(
+					(user) =>
+						user.id.toString().includes(value.toLowerCase()) ||
+						user.name.toLowerCase().includes(value.toLowerCase()) ||
+						user.email.toLowerCase().includes(value.toLowerCase()) ||
+						user.phone.toLowerCase().includes(value.toLowerCase()),
+				);
+			}
+			setUsers(newUsers);
+		} else {
+			setUsers([...preSearchUsers]);
+			setPreSearchUsers([]);
+		}
+	};
+
 	const emptyUserState = () => {
 		setUser({
+			id: '',
 			name: '',
 			email: '',
 			phone: '',
@@ -47,7 +85,6 @@ function ContactForm() {
 		let confirmText = 'Are you sure?';
 		if (window.confirm(confirmText) === true) {
 			let newUsers = users.filter((user) => user.id !== user_id);
-			console.log(newUsers);
 			setUsers(newUsers);
 		}
 	};
@@ -112,7 +149,25 @@ function ContactForm() {
 				</header>
 				<div className="row">
 					<div className="col-sm-10 col-md-8 col-lg-6 mx-auto">
-						<table className="table table-striped table-sm table-dark">
+						<div className="input-group my-4">
+							<span className="input-group-text bg-info border-info" id="search-addon">
+								<i className="fa fa-search"></i>
+							</span>
+							<input
+								onChange={searchHandler}
+								type="text"
+								className="form-control bg-dark text-light border-info"
+								placeholder="Search"
+								name="search"
+								aria-label="Search"
+								aria-describedby="search-addon"
+							/>
+						</div>
+					</div>
+				</div>
+				<div className="row">
+					<div className="col-sm-10 col-md-8 col-lg-6 mx-auto">
+						<table className="table table-striped table-sm table-dark border-secondary">
 							<thead className="table-info">
 								<tr>
 									<th>#</th>
