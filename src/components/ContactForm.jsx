@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import ContactModal from './ContactModal';
-import ContactRow from './ContactRow';
+import { default as ContactRow } from './ContactRow';
+import { Modal } from './Modal';
 
 function ContactForm() {
 	const [users, setUsers] = useState([
@@ -12,13 +12,13 @@ function ContactForm() {
 	const [preSearchUsers, setPreSearchUsers] = useState([]);
 
 	const [user, setUser] = useState({
-		id: '',
+		id: 0,
 		name: '',
 		email: '',
 		phone: '',
 	});
 
-	const [userEdit, setUserEdit] = useState([{ id: 0, name: '', email: '', phone: '' }]);
+	const [userEdit, setUserEdit] = useState({});
 
 	const inputHandler = (event) => {
 		const { name, value } = event.target;
@@ -65,7 +65,7 @@ function ContactForm() {
 
 	const emptyUserState = () => {
 		setUser({
-			id: '',
+			id: 0,
 			name: '',
 			email: '',
 			phone: '',
@@ -78,15 +78,16 @@ function ContactForm() {
 			let data = { ...user };
 			data.id = +new Date();
 			setUsers([...users, data]);
+			setPreSearchUsers([...preSearchUsers, data]);
 			emptyUserState();
 			event.target.reset();
 		}
 	};
 
-	const editUser = (user_id) => {
-		let editableUser = users.filter((user) => user.id === user_id);
-		setUserEdit(editableUser);
+	const editUser = (user) => {
+		setUserEdit({ ...user });
 	};
+
 	const deleteUser = (user_id) => {
 		let confirmText = 'Are you sure?';
 		if (window.confirm(confirmText) === true) {
@@ -102,7 +103,7 @@ function ContactForm() {
 					<h2 className="text-info">Add New Contact</h2>
 				</header>
 				<div className="row">
-					<div className="col-sm-6 col-md-4 col-lg-3 mx-auto">
+					<div className="col-sm-6 col-md-4 col-lg-4 mx-auto">
 						<form action="contact-form" onSubmit={onSubmit}>
 							<div className="mb-2">
 								<label htmlFor="name" className="form-label">
@@ -154,7 +155,7 @@ function ContactForm() {
 					<h2 className="text-info">Contact List</h2>
 				</header>
 				<div className="row">
-					<div className="col-sm-10 col-md-8 col-lg-6 mx-auto">
+					<div className="col-sm-6 col-md-4 col-lg-4 mx-auto">
 						<div className="input-group my-4">
 							<span className="input-group-text bg-info border-info" id="search-addon">
 								<i className="fa fa-search"></i>
@@ -172,7 +173,7 @@ function ContactForm() {
 					</div>
 				</div>
 				<div className="row">
-					<div className="col-sm-10 col-md-8 col-lg-6 mx-auto">
+					<div className="col-sm-10 col-md-8 col-lg-8 mx-auto">
 						<table className="table table-striped table-sm table-dark border-secondary">
 							<thead className="table-info">
 								<tr>
@@ -192,7 +193,9 @@ function ContactForm() {
 					</div>
 				</div>
 			</div>
-			<ContactModal userEdit={userEdit} />
+			{Object.keys(userEdit).length > 0 && (
+				<Modal userEdit={userEdit} setUserEdit={setUserEdit} users={users} setUsers={setUsers} />
+			)}
 		</>
 	);
 }

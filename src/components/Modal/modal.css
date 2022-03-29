@@ -1,0 +1,48 @@
+.custom-modal {
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	transition: all 0.3s ease;
+	top: 0;
+	left: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.custom-modal.open {
+	visibility: visible;
+	opacity: 1;
+	transition-delay: 0s;
+}
+.custom-modal-bg {
+	position: absolute;
+	background: #0000008c;
+	width: 100%;
+	height: 100%;
+}
+.custom-modal-container {
+	border-radius: 10px;
+	background: #fff;
+	position: relative;
+	padding: 15px;
+	border: 1px solid;
+	color: #000;
+	min-width: 400px;
+}
+.custom-modal-close {
+	position: absolute;
+	right: 15px;
+	top: 15px;
+	outline: none;
+	appearance: none;
+	color: #000;
+	background: none;
+	background-color: #dc3545;
+	border-radius: 50%;
+	border: 0px;
+	font-weight: bold;
+	cursor: pointer;
+	height: 20px;
+	width: 20px;
+	padding: 0;
+}

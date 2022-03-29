@@ -10,9 +10,7 @@ function ContactRow({ user, editUser, deleteUser }) {
 					<button
 						type="button"
 						className="btn btn-info text-light btn-sm px-1 py-0 me-1"
-						data-bs-toggle="modal"
-						data-bs-target="#reactModal"
-						onClick={() => editUser(user.id)}
+						onClick={() => editUser(user)}
 					>
 						<i className="fa fa-edit"></i>
 					</button>
