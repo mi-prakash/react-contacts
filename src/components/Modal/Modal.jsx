@@ -21,6 +21,7 @@ export function Modal({ userEdit, setUserEdit, users, setUsers }) {
 					user.email = userEdit.email;
 					user.phone = userEdit.phone;
 				}
+				return user;
 			});
 			setUsers([...users]);
 			event.target.reset();
@@ -87,7 +88,7 @@ export function Modal({ userEdit, setUserEdit, users, setUsers }) {
 						<button type="button" className="btn btn-danger btn-sm text-dark" onClick={() => setUserEdit({})}>
 							<i className="fa fa-close"></i> Close
 						</button>
-						<button type="submit" className="btn btn-info btn-sm" data-bs-dismiss="modal">
+						<button type="submit" className="btn btn-info btn-sm">
 							<i className="fa fa-save"></i> Save
 						</button>
 					</div>
