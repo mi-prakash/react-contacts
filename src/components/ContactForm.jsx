@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import ContactModal from './ContactModal';
 import ContactRow from './ContactRow';
 
 function ContactForm() {
@@ -16,6 +17,8 @@ function ContactForm() {
 		email: '',
 		phone: '',
 	});
+
+	const [userEdit, setUserEdit] = useState([{ id: 0, name: '', email: '', phone: '' }]);
 
 	const inputHandler = (event) => {
 		const { name, value } = event.target;
@@ -37,7 +40,6 @@ function ContactForm() {
 		if (value !== '') {
 			let newUsers;
 			if (isPreEmpty) {
-				console.log(users[0].id);
 				newUsers = users.filter(
 					(user) =>
 						user.id.toString().includes(value.toLowerCase()) ||
@@ -81,6 +83,10 @@ function ContactForm() {
 		}
 	};
 
+	const editUser = (user_id) => {
+		let editableUser = users.filter((user) => user.id === user_id);
+		setUserEdit(editableUser);
+	};
 	const deleteUser = (user_id) => {
 		let confirmText = 'Are you sure?';
 		if (window.confirm(confirmText) === true) {
@@ -179,13 +185,14 @@ function ContactForm() {
 							</thead>
 							<tbody>
 								{users.map((user) => (
-									<ContactRow key={user.id} user={user} deleteUser={deleteUser} />
+									<ContactRow key={user.id} user={user} editUser={editUser} deleteUser={deleteUser} />
 								))}
 							</tbody>
 						</table>
 					</div>
 				</div>
 			</div>
+			<ContactModal userEdit={userEdit} />
 		</>
 	);
 }
