@@ -96,6 +96,21 @@ function ContactForm() {
 		}
 	};
 
+	const inlineEditUser = (userEdit) => {
+		if (user.name && user.email) {
+			const updatedUsers = users.map((user) => {
+				if (user.id === userEdit.id) {
+					user.name = userEdit.name;
+					user.email = userEdit.email;
+					user.phone = userEdit.phone;
+				}
+				return user;
+			});
+
+			updatedUsers(updatedUsers);
+		}
+	};
+
 	return (
 		<>
 			<div className="container form mt-5">
@@ -141,8 +156,8 @@ function ContactForm() {
 									value={user.email}
 								/>
 							</div>
-							<div className="d-grid pt-2">
-								<button type="submit" className="btn btn-info btn-sm add-new">
+							<div className="d-grid pt-4">
+								<button type="submit" className="btn btn-info add-new">
 									<i className="fa fa-plus"></i> Add New
 								</button>
 							</div>
@@ -186,7 +201,15 @@ function ContactForm() {
 							</thead>
 							<tbody>
 								{users.map((user) => (
-									<ContactRow key={user.id} user={user} editUser={editUser} deleteUser={deleteUser} />
+									<ContactRow
+										key={user.id}
+										user={user}
+										editUser={editUser}
+										inlineEditUser={inlineEditUser}
+										deleteUser={deleteUser}
+										users={users}
+										setUsers={setUsers}
+									/>
 								))}
 							</tbody>
 						</table>

@@ -52,3 +52,18 @@ label {
 	color: #000;
 	border-color: #10caf0;
 }
+td {
+	position: relative;
+	.pointer {
+		cursor: pointer;
+		display: none;
+		position: absolute;
+		right: 4px;
+		margin-top: 4px;
+	}
+	&:hover {
+		.pointer {
+			display: inline-flex;
+		}
+	}
+}
